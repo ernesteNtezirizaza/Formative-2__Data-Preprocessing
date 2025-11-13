@@ -6,8 +6,8 @@ def load_data():
     """Load the raw datasets from the specified paths"""
     try:
         # Load customer transactions data
-        transactions_path = 'data/raw/customer_transactions.csv'
-        social_profiles_path = 'data/raw/customer_social_profiles.csv'
+        transactions_path = '../data/raw/customer_transactions.csv'
+        social_profiles_path = '../data/raw/customer_social_profiles.csv'
         
         transactions_df = pd.read_csv(transactions_path)
         social_profiles_df = pd.read_csv(social_profiles_path)
@@ -191,10 +191,10 @@ def validate_merge(merged_df, transactions_df, social_profiles_df):
 def save_merged_data(merged_df):
     """Save the merged data to the specified location"""
     # Create directory if it doesn't exist
-    os.makedirs('data/processed', exist_ok=True)
+    os.makedirs('../data/processed', exist_ok=True)
     
     # Save to CSV
-    output_path = 'data/processed/merged_customer_data.csv'
+    output_path = '../data/processed/merged_customer_data.csv'
     merged_df.to_csv(output_path, index=False)
     
     print(f"\nMerged data saved to: {output_path}")
