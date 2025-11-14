@@ -1,0 +1,86 @@
+{
+    "model_info": {
+        "model_type": "LogisticRegression",
+        "solver": "liblinear",
+        "penalty": "l2",
+        "C": 1.0,
+        "random_state": 42,
+        "n_iterations": 6
+    },
+    "performance_metrics": {
+        "accuracy": 1.0,
+        "f1_score": 1.0,
+        "roc_auc": 1.0,
+        "log_loss": 0.10899038763449484,
+        "cv_mean": 1.0,
+        "cv_std": 0.0,
+        "performance_level": "Excellent"
+    },
+    "dataset_info": {
+        "original_shape": [
+            104,
+            56
+        ],
+        "n_speakers": 4,
+        "n_features_final": 50,
+        "speaker_distribution": {
+            "Erneste": 26,
+            "Idara": 26,
+            "Rodas": 26,
+            "Thierry": 26
+        },
+        "data_balance_ratio": 1.0
+    },
+    "feature_analysis": {
+        "top_features": [
+            {
+                "feature": "mfcc_std_6",
+                "importance": 0.650272314550699
+            },
+            {
+                "feature": "mfcc_5",
+                "importance": 0.5968232639003148
+            },
+            {
+                "feature": "mfcc_3",
+                "importance": 0.5839697725279157
+            },
+            {
+                "feature": "energy_std",
+                "importance": 0.5656064317759792
+            },
+            {
+                "feature": "energy_mean",
+                "importance": 0.5001443907295512
+            },
+            {
+                "feature": "mfcc_std_5",
+                "importance": 0.4621033727747108
+            },
+            {
+                "feature": "mfcc_8",
+                "importance": 0.40729325503463
+            },
+            {
+                "feature": "mfcc_std_9",
+                "importance": 0.38107258963854984
+            },
+            {
+                "feature": "mfcc_7",
+                "importance": 0.3757763474223884
+            },
+            {
+                "feature": "mfcc_std_8",
+                "importance": 0.3596222182142277
+            }
+        ],
+        "n_features_80_percent": 33,
+        "n_features_90_percent": 40,
+        "n_strong_features": 49
+    },
+    "multimodal_assessment": {
+        "suitable_for_primary": true,
+        "recommended_use": "Primary authentication",
+        "confidence_threshold": 0.8
+    }
+}
