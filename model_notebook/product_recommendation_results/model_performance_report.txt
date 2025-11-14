@@ -1,0 +1,23 @@
+PRODUCT RECOMMENDATION MODEL - PERFORMANCE REPORT
+Best Model: XGBoost
+Accuracy: 0.7442
+F1-Score: 0.7428
+Log Loss: 0.7594
+
+All Models Performance:
+
+
+Random Forest:
+  Accuracy: 0.7209
+  F1-Score: 0.7152
+  Log Loss: 0.9402
+
+Logistic Regression:
+  Accuracy: 0.4186
+  F1-Score: 0.3895
+  Log Loss: 1.6161
+
+XGBoost:
+  Accuracy: 0.7442
+  F1-Score: 0.7428
+  Log Loss: 0.7594

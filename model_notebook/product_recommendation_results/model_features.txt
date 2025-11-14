@@ -1,0 +1,26 @@
+PRODUCT RECOMMENDATION MODEL - FEATURES
+======================================================================
+
+1. purchase_amount
+2. customer_rating
+3. engagement_score
+4. purchase_interest_score
+5. platform_encoded
+6. sentiment_encoded
+7. purchase_month
+8. purchase_dayofweek
+9. is_weekend
+10. purchase_quarter
+11. transaction_count
+12. avg_purchase_amount
+13. total_spent
+14. std_purchase_amount
+15. avg_customer_rating
+16. avg_engagement_score
+17. max_engagement_score
+18. avg_purchase_interest
+19. max_purchase_interest
+20. amount_rating_interaction
+21. engagement_interest_interaction
+22. amount_per_transaction
+23. amount_category_encoded

@@ -1,0 +1,28 @@
+{
+    "model_info": {
+        "model_type": "XGBoost",
+        "best_model": "XGBoost"
+    },
+    "performance_metrics": {
+        "accuracy": 0.7441860465116279,
+        "f1_score": 0.7427969826990635,
+        "log_loss": 0.7594289856918471
+    },
+    "all_models_performance": {
+        "Random Forest": {
+            "accuracy": 0.7209302325581395,
+            "f1_score": 0.7151515151515152,
+            "log_loss": 0.9401907663201418
+        },
+        "Logistic Regression": {
+            "accuracy": 0.4186046511627907,
+            "f1_score": 0.3894522284815511,
+            "log_loss": 1.6161363872753491
+        },
+        "XGBoost": {
+            "accuracy": 0.7441860465116279,
+            "f1_score": 0.7427969826990635,
+            "log_loss": 0.7594289856918471
+        }
+    }
+}
