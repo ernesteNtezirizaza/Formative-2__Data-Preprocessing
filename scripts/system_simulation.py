@@ -607,6 +607,9 @@ def get_user_inputs():
                 break
             else:
                 print("Default image not found. Please enter an image name.\n")
+                retry = input("Would you like to try again? (y/n): ").strip().lower()
+                if retry != 'y':
+                    return None, None, None, None, None
                 continue
         
         image_path = find_image_file(image_input, root_dir)
@@ -618,7 +621,10 @@ def get_user_inputs():
         else:
             print(f"Error: Image file not found: {image_input}")
             print(f"Searched in: {images_dir} and {augmented_images_dir}")
-            print("Please try again.\n")
+            retry = input("Would you like to try again? (y/n): ").strip().lower()
+            if retry != 'y':
+                return None, None, None, None, None
+            print()
     
     # CRITICAL: Run facial recognition NOW before asking for customer data
     print_section("FACIAL RECOGNITION CHECK")
@@ -670,7 +676,13 @@ def get_user_inputs():
             print("SYSTEM SECURITY: Access denied at facial recognition stage")
             print("Product recommendation will NOT be executed.")
             print("=" * 70)
-            return None, None, None, None, None  # Return None to indicate failure
+            # Prompt user to try again
+            retry = input("\nWould you like to try with a different image? (y/n): ").strip().lower()
+            if retry == 'y':
+                # Recursively call get_user_inputs to try again
+                return get_user_inputs()
+            else:
+                return None, None, None, None, None  # Return None to indicate failure and user chose to quit
         
         # Check if person is authorized
         if person not in AUTHORIZED_MEMBERS:
@@ -685,7 +697,13 @@ def get_user_inputs():
             print("SYSTEM SECURITY: Access denied at facial recognition stage")
             print("Product recommendation will NOT be executed.")
             print("=" * 70)
-            return None, None, None, None, None  # Return None to indicate failure
+            # Prompt user to try again
+            retry = input("\nWould you like to try with a different image? (y/n): ").strip().lower()
+            if retry == 'y':
+                # Recursively call get_user_inputs to try again
+                return get_user_inputs()
+            else:
+                return None, None, None, None, None  # Return None to indicate failure and user chose to quit
         
         # Success - person is recognized and authorized
         print(f"\nFACIAL RECOGNITION SUCCESSFUL")
@@ -714,7 +732,13 @@ def get_user_inputs():
         print("SYSTEM SECURITY: Access denied at facial recognition stage")
         print("Product recommendation will NOT be executed.")
         print("=" * 70)
-        return None, None, None, None, None  # Return None to indicate failure
+        # Prompt user to try again
+        retry = input("\nWould you like to try with a different image? (y/n): ").strip().lower()
+        if retry == 'y':
+            # Recursively call get_user_inputs to try again
+            return get_user_inputs()
+        else:
+            return None, None, None, None, None  # Return None to indicate failure and user chose to quit
     
     # Step 2: Get customer data for product recommendation
     # Only reach here if facial recognition was successful
@@ -918,29 +942,49 @@ def main():
     else:
         # Check if we should use interactive mode or command-line args
         if not args.non_interactive and not args.image and not args.audio:
-            # Interactive mode - get inputs from user
-            result = get_user_inputs()
-            if result is None or (isinstance(result, tuple) and result[0] is None):
-                # Facial recognition failed in interactive mode
-                print("\nTransaction cancelled - facial recognition failed")
-                print("System will not proceed to product recommendation.")
-                return
-            image_path, customer_data, audio_path, verified_person, verified_confidence = result
-            
-            # Run full transaction with collected inputs
-            # Pass verified_person to skip redundant facial recognition
-            success = simulate_full_transaction(
-                image_path, 
-                audio_path, 
-                customer_data,
-                verified_person=verified_person,
-                face_confidence=verified_confidence
-            )
-            
-            if success:
-                print("\nTransaction completed successfully!")
-            else:
-                print("\nTransaction failed - access denied")
+            # Interactive mode - loop until user chooses to quit
+            while True:
+                result = get_user_inputs()
+                if result is None or (isinstance(result, tuple) and result[0] is None):
+                    # Facial recognition failed or user chose to quit
+                    print("\nTransaction cancelled - facial recognition failed or user chose to quit")
+                    print("System will not proceed to product recommendation.")
+                    # Ask if user wants to try again
+                    retry = input("\nWould you like to start a new transaction? (y/n): ").strip().lower()
+                    if retry != 'y':
+                        print("\nExiting system. Thank you!")
+                        break
+                    continue
+                
+                image_path, customer_data, audio_path, verified_person, verified_confidence = result
+                
+                # Run full transaction with collected inputs
+                # Pass verified_person to skip redundant facial recognition
+                success = simulate_full_transaction(
+                    image_path, 
+                    audio_path, 
+                    customer_data,
+                    verified_person=verified_person,
+                    face_confidence=verified_confidence
+                )
+                
+                if success:
+                    print("\n" + "=" * 70)
+                    print("Transaction completed successfully!")
+                    print("=" * 70)
+                else:
+                    print("\n" + "=" * 70)
+                    print("Transaction failed - access denied")
+                    print("=" * 70)
+                
+                # Ask if user wants to try again after successful or failed attempt
+                retry = input("\nWould you like to start a new transaction? (y/n): ").strip().lower()
+                if retry != 'y':
+                    print("\nExiting system. Thank you!")
+                    break
+                print("\n" + "=" * 70)
+                print("Starting new transaction...")
+                print("=" * 70)
             return
         else:
             # Use command-line arguments
