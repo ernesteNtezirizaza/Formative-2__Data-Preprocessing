@@ -48,31 +48,131 @@ Formative-2__Data-Preprocessing/
 │   ├── predict_face.py            # Facial recognition prediction
 │   ├── predict_voice.py           # Voice validation prediction
 │   ├── predict_product.py         # Product recommendation prediction
-│   └── system_simulation.py       # Complete system simulation ⭐
+│   └── system_simulation.py       # Complete system simulation
 └── README.md
 ```
 
-## Quick Start
+## Running the System from Scratch
 
-### 1. System Simulation (Main Demo)
+### Prerequisites
 
-Run the complete system flow:
+1. **Python 3.7+** installed on your system
+2. **Required Python packages** (see Requirements section below)
+
+### Step 1: Install Dependencies
 
 ```bash
-# Full transaction with default test data
-python scripts/system_simulation.py
-
-# With custom image and audio
-python scripts/system_simulation.py --image "Image_Processing/Images/Erneste_Neutral.jpg" --audio "Audio_Processing/Audios/Erneste_yes_approve.wav"
-
-# Simulate unauthorized attempt
-python scripts/system_simulation.py --unauthorized
-
-# With custom customer data for product recommendation
-python scripts/system_simulation.py --image "Image_Processing/Images/Thierry_Smile.jpg" --audio "Audio_Processing/Audios/Thierry_confirm_transaction.wav" --amount 250 --rating 4.0
+# Install all required packages
+pip install pandas numpy scikit-learn xgboost opencv-python librosa matplotlib seaborn joblib
 ```
 
-### 2. Individual Model Predictions
+### Step 2: Prepare Data
+
+The system requires processed data files. If starting from scratch:
+
+#### 2.1 Merge Customer Data
+
+```bash
+# Merge customer social profiles and transactions
+python scripts/data_merging.py
+```
+
+This creates `data/processed/merged_customer_data.csv` which is used for product recommendation.
+
+#### 2.2 Process Images
+
+1. Place your images in `Image_Processing/Images/` (3 images per member: Neutral, Smile, Surprised)
+2. Run the image processing notebook:
+   ```bash
+   jupyter notebook Image_Processing/image_processing.ipynb
+   ```
+   This will:
+   - Apply augmentations to images
+   - Extract features (color histograms, statistical features, texture features)
+   - Generate `Image_Processing/image_features.csv`
+
+#### 2.3 Process Audio
+
+1. Place your audio files in `Audio_Processing/Audios/` (2 phrases per member)
+2. Run the audio processing notebook:
+   ```bash
+   jupyter notebook Audio_Processing/audio_processing.ipynb
+   ```
+   This will:
+   - Apply augmentations to audio files
+   - Extract features (MFCCs, spectral roll-off, energy, etc.)
+   - Generate `Audio_Processing/audio_features.csv`
+
+### Step 3: Train Models
+
+Train all three models using the Jupyter notebooks:
+
+#### 3.1 Facial Recognition Model
+
+```bash
+jupyter notebook model_notebook/facial_recognition.ipynb
+```
+
+This trains a RandomForestClassifier and saves:
+- `model_notebook/facial_recognition_results/facial_recognition_model.pkl`
+- `model_notebook/facial_recognition_results/facial_recognition_scaler.pkl`
+- `model_notebook/facial_recognition_results/facial_recognition_label_encoder.pkl`
+- Performance metrics in JSON format
+
+#### 3.2 Voice Print Verification Model
+
+```bash
+jupyter notebook model_notebook/voice_print_verification.ipynb
+```
+
+This trains a LogisticRegression model and saves:
+- `model_notebook/voice_print_verification_results/voice_print_verification_model.pkl`
+- `model_notebook/voice_print_verification_results/voice_print_verification_scaler.pkl`
+- `model_notebook/voice_print_verification_results/voice_print_verification_label_encoder.pkl`
+- Performance metrics in JSON format
+
+#### 3.3 Product Recommendation Model
+
+```bash
+jupyter notebook model_notebook/product_recommendation.ipynb
+```
+
+This trains an XGBoost model (best performing) and saves:
+- `model_notebook/product_recommendation_results/product_recommendation_model.pkl`
+- `model_notebook/product_recommendation_results/product_recommendation_scaler.pkl`
+- `model_notebook/product_recommendation_results/product_recommendation_label_encoders.pkl`
+- Performance metrics in JSON format
+
+### Step 4: Run the System
+
+Once all models are trained, you can run the complete system:
+
+#### 4.1 Interactive Mode (Recommended)
+
+```bash
+# Run the system simulation in interactive mode
+python scripts/system_simulation.py
+```
+
+The system will:
+1. Prompt you to enter an image name (searches in `Images/` and `Augmented_Images/`)
+2. **Run facial recognition immediately** - if face is not recognized or not authorized, stops here
+3. If face recognized, prompt for customer data (purchase amount, rating, etc.)
+4. Generate product recommendation (name hidden until voice validation)
+5. Prompt for audio file name (searches in `Audios/` and `Augmented_Audios/`)
+6. Run voice validation
+7. **Display product only if voice matches face**
+
+#### 4.2 Command-Line Mode
+
+```bash
+# With image and audio file names (searches in Images/Audios folders)
+python scripts/system_simulation.py
+```
+
+### Step 5: Test Individual Models
+
+You can also test individual models separately:
 
 ```bash
 # Facial recognition
@@ -81,9 +181,13 @@ python scripts/predict_face.py "Image_Processing/Images/Erneste_Neutral.jpg"
 # Voice validation
 python scripts/predict_voice.py "Audio_Processing/Audios/Erneste_yes_approve.wav"
 
-# Product recommendation
+# Product recommendation (uses default customer data)
 python scripts/predict_product.py
 ```
+
+## Quick Start (If Models Already Trained)
+
+If the models are already trained and saved, you can skip Steps 2-3 and go directly to Step 4.
 
 ## Models
 
@@ -138,20 +242,35 @@ Performance metrics are saved in JSON format in each model's results folder.
 
 ## Requirements
 
+### Python Packages
+
 Install required packages:
 
 ```bash
 pip install pandas numpy scikit-learn xgboost opencv-python librosa matplotlib seaborn joblib
 ```
 
-## Assignment Checklist
+### Required Files Structure
 
-See `ASSIGNMENT_CHECKLIST.md` for a complete checklist of all assignment requirements.
+For the system to run, ensure you have:
+
+1. **Trained Models** (in `model_notebook/*_results/` folders):
+   - Facial recognition model files
+   - Voice verification model files
+   - Product recommendation model files
+
+2. **Feature Files**:
+   - `Image_Processing/image_features.csv`
+   - `Audio_Processing/audio_features.csv`
+   - `data/processed/merged_customer_data.csv`
+
+3. **Test Files**:
+   - Images in `Image_Processing/Images/` or `Image_Processing/Augmented_Images/`
+   - Audio files in `Audio_Processing/Audios/` or `Audio_Processing/Augmented_Audios/`
 
 ## Team Members
 
-- [List team members and their contributions]
-
-## License
-
-[Add license information if applicable]
+- Erneste Ntezirizaza
+- Thierry Shyaka
+- Idara Patrick
+- Rodas Goniche
