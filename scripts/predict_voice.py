@@ -7,15 +7,6 @@ is speaking in a given audio file using the trained voice print verification mod
 Usage:
     # As a script
     python predict_voice.py <audio_path>
-    
-    # As a function
-    from scripts.predict_voice import predict_voice
-    
-    person, confidence = predict_voice("path/to/audio.wav")
-    if person:
-        print(f"Identified as: {person} (confidence: {confidence:.2%})")
-    else:
-        print(f"Person not recognized (confidence: {confidence:.2%})")
 """
 
 import pandas as pd

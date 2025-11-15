@@ -6,16 +6,7 @@ is in a given image using the trained facial recognition model.
 
 Usage:
     # As a script
-    python predict_face.py <image_path> [confidence_threshold]
-    
-    # As a function
-    from scripts.predict_face import predict_face
-    
-    person, confidence = predict_face("path/to/image.jpg")
-    if person:
-        print(f"Identified as: {person} (confidence: {confidence:.2%})")
-    else:
-        print(f"Person not recognized (confidence: {confidence:.2%})")
+    python predict_face.py <image_path>
 """
 
 import pandas as pd

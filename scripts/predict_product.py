@@ -21,9 +21,7 @@ Usage:
         'review_sentiment': 'Positive',
         'purchase_date': '2024-01-15'
     }
-    
-    product, confidence = predict_product(customer_data)
-    print(f"Recommended product: {product} (confidence: {confidence:.2%})")
+
 """
 
 import pandas as pd
@@ -315,9 +313,9 @@ def main():
     print("=" * 70)
     
     if product:
-        print(f"\n✓ Recommended product category: {product}")
+        print(f"\nRecommended product category: {product}")
     else:
-        print("\n✗ Could not make a prediction.")
+        print("\nCould not make a prediction.")
 
 
 if __name__ == "__main__":
